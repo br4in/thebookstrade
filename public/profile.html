@@ -2,11 +2,11 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>The Books Trade</title>
+        <title>Profile</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
-        <link rel="stylesheet" href="css/index.css">
         <link rel="stylesheet" href="css/default.css">
+        <link rel="stylesheet" href="css/profile.css">
     </head>
     <body>
         <nav>
@@ -30,41 +30,31 @@
                 <button class="nav-btn" id="login-btn" onclick="location.href='/logout'"></button>
             </div>
         </nav>
+        
         <div id="features-div">
             <div id="intro-bg-div">
                 <img id="intro-bg" src="imgs/books-cover.jpg">
             </div>
-            <h1>The Books Trade</h1>
-            <div id="container">
-                <div class="floated-div" id="features-list-div">
-                    <p>Features : </p>
-                    <ul>
-                        <li>Add the books you would like to trade</li>
-                        <li>View the books other users would like to trade</li>
-                        <li>Request or accept trades</li>
-                    </ul>
-                </div>
-                <div class="floated-div" id="login-signup-div">
-                    <p>Login :</p>
-                    <form method="post" action="/login" id="login-form">
-                        <input class="inputText" type="text" name="email" placeholder="Email">
-                        <input class="inputText" type="password" name="password" placeholder="Password">
+            <div id="profile-settings">
+                <h1>Update Profile</h1>
+                <div class="container">
+                    <form method="post" action="/updateProfile">
+                        <input type="text" class="inputText" name="city" placeholder="City">
+                        <input type="text" class="inputText" name="region" placeholder="Region">
+                        <input type="text" class="inputText" name="username" placeholder="Username">
                         <input class="inputSubmit" type="submit">
                     </form>
-                    <p>Or Sign up :</p>
-                    <form method="post" action="/signup" id="signup-form">
-                        <input class="inputText" type="text" name="email" placeholder="Email">
-                        <input class="inputText" type="password" name="password" placeholder="Password">
+                </div>
+                <h1>Change Password</h1>
+                <div class="container">
+                    <form method="post" action="changePasswd">
+                        <input type="text" class="inputText" name="oldPass" placeholder="Old password">
+                        <input type="text" class="inputText" name="newPass" placeholder="New password">
                         <input class="inputSubmit" type="submit">
                     </form>
                 </div>
             </div>
+            
         </div>
-        
-        
-        
-        
-        <script src='https://code.jquery.com/jquery-3.1.1.min.js'></script>
-        <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>

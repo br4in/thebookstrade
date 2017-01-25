@@ -7,10 +7,6 @@ module.exports = function(app, passport) {
         
     // Login
     app.route('/login')
-        .get(function(request, response) {
-            //response.sendFile(process.cwd() + '/public/login.html', { message: request.flash('loginMessage') }); 
-        });
-    app.route('/login')
         .post(passport.authenticate('local-login', {
             successRedirect: '/profile',
             failureRedirect: '/',
@@ -31,7 +27,11 @@ module.exports = function(app, passport) {
     app.route('/profile')
         .get(isLoggedIn, function(request, response) {
             //response.sendFile(process.cwd() + '/public/profile.html', { user : request.user });
-            response.send('You are logged in!');
+            var data = {
+                user : request.user
+            };
+            console.log(request.user.local['email']);
+            response.sendFile(process.cwd() + '/public/profile.html', { user : request.user });
         });
     
     // Logout 
@@ -40,7 +40,9 @@ module.exports = function(app, passport) {
             request.logout();
             response.redirect('/');
         });
-        
+    
+    
+       
     // Make sure the user is logged in 
     function isLoggedIn(request, response, next) {
         if (request.isAuthenticated()) {
@@ -49,6 +51,4 @@ module.exports = function(app, passport) {
             response.redirect('/');
         }
     }
-        
-        
 };

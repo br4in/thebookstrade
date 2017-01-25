@@ -1,0 +1,180 @@
+/******************************* Body *******************************/
+body {
+    background: url(/imgs/books-bg.jpeg) no-repeat center;
+    margin: 0;
+    padding: 0;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+}
+/************************** Navigation Bar **************************/
+nav {
+    min-width: 400px;
+    height: 60px;
+    border-bottom: 10px solid transparent;
+    border-image: url(/imgs/dark-wood.jpg) 25% round;
+    background: url(/imgs/wood.jpg) center center;
+}
+
+nav ul {
+    list-style-type: none;
+    width: 83%;
+    float: left;
+}
+
+nav li {
+    display: inline;
+    margin: 0 2px;
+}
+
+nav li a {
+    font-size: 18px;
+    font-family: 'Kaushan Script', cursive;
+    text-decoration: none;
+    padding: 10px 16px;
+    background: url(/imgs/book.png) center center;
+    box-shadow: 4px 4px 1px rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+}
+
+#settings-div {
+    width: 75px;
+    padding: 8px;
+    float: right;
+}
+
+.nav-btn {
+    height: 34px;
+    width: 34px;
+    padding: 0 2px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.9);
+}
+
+#settings-btn {
+    background: url(/imgs/settings.png) center center;
+    background-color: rgba(255, 255, 255, 0.5);
+    outline: none;
+}
+
+#login-btn {
+    background: url(/imgs/exit.png) center center;
+    background-color: rgba(255, 255, 255, 0.5);
+    outline: none;
+}
+
+.upper {
+    color: white;
+    background: url(/imgs/book-upper.png) center center;
+}
+
+/************************** Intro Div **************************/
+#features-div {
+    width: 50%;
+    min-width: 300px;
+    padding: 15px;
+    margin: 80px auto 0 auto;
+    background-color: aliceblue;
+    border-radius: 25px;
+    box-shadow: 3px 3px 2px rgba(255, 255, 255, 0.5);
+}
+
+#intro-bg-div {
+    height: 25%;
+}
+
+#intro-bg {
+    width: 100%;
+    height: 100%;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom: 15px solid black;
+    border-image: url(/imgs/wood.jpg) 25% round;
+}
+
+#features-div h1 {
+    text-align: center;
+    margin: 1% 0;
+}
+
+/************************ Form input *******************************/
+.inputText, .inputSubmit{
+    margin: 3px 0;
+    width: 70%;
+    height: 17px;
+    border-radius: 10px;
+    border: none;
+    text-indent: 5px;
+    outline: none;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.inputText:focus {
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
+    margin: 5px 0;
+    border: 1px solid gray;
+}
+
+.inputSubmit {
+    width: 50%;
+    background-color: dodgerblue;
+    color: white;
+}
+
+.inputSubmit:active {
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
+    margin: 5px 0;
+}
+
+
+/************************** Media Queries **************************/
+@media screen and (max-width: 812px) {
+    nav {
+        min-width: 370px;
+    }
+    nav ul {
+        margin-left: -39px;
+    }
+    nav li {
+        margin: 1px;
+    }
+    nav li a {
+        font-size: 16px;
+        background: url(/imgs/book.png) no-repeat center center;
+        padding: 12px 12px;
+    }
+    .lower {
+        font-size: 15px;
+    }
+    #settings-btn {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    #login-btn {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    nav {
+        height: 50px;
+    }
+    nav ul {
+        width: 100%;
+        margin-left: -41px;
+    }
+    nav li {
+        margin: 0;
+    }
+    nav li a {
+        font-size: 14px;
+        padding: 9px 9px;
+    }
+    .lower {
+        font-size: 14px;
+    }
+    .upper {
+        background: url(/imgs/book.png) no-repeat center center;
+    }
+}
