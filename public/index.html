@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>The Books Trade</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+        <link rel="stylesheet" href="css/index.css">
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a class="upper">T</a></li>
+                <li><a class="lower">h</a></li>
+                <li><a class="lower">e</a></li>
+                <li><a class="upper">B</a></li>
+                <li><a class="lower">o</a></li>
+                <li><a class="lower">o</a></li>
+                <li><a class="lower">k</a></li>
+                <li><a class="lower">s</a></li>
+                <li><a class="upper">T</a></li>
+                <li><a class="lower">r</a></li>
+                <li><a class="lower">a</a></li>
+                <li><a class="lower">d</a></li>
+                <li><a class="lower">e</a></li>
+            </ul>
+            <div id="settings-div">
+                <button class="nav-btn" id="settings-btn"></button>
+                <button class="nav-btn" id="login-btn"></button>
+            </div>
+        </nav>
+        <div id="features-div">
+            <div id="intro-bg-div">
+                <img id="intro-bg" src="imgs/books-cover.jpg">
+            </div>
+            <h1>The Books Trade</h1>
+            <div id="container">
+                <div class="floated-div" id="features-list-div">
+                    <p>Features : </p>
+                    <ul>
+                        <li>Add the books you would like to trade</li>
+                        <li>View the books other users would like to trade</li>
+                        <li>Request or accept trades</li>
+                    </ul>
+                </div>
+                <div class="floated-div" id="login-signup-div">
+                    <p>Login :</p>
+                    <form method="post" action="/login" id="login-form">
+                        <input class="inputText" type="text" name="email" placeholder="Email">
+                        <input class="inputText" type="password" name="password" placeholder="Password">
+                        <input class="inputSubmit" type="submit">
+                    </form>
+                    <p>Or Sign up :</p>
+                    <form method="post" action="/signup" id="signup-form">
+                        <input class="inputText" type="text" name="email" placeholder="Email">
+                        <input class="inputText" type="password" name="password" placeholder="Password">
+                        <input class="inputSubmit" type="submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+        <script src='https://code.jquery.com/jquery-3.1.1.min.js'></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>

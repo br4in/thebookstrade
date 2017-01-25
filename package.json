@@ -1,0 +1,29 @@
+{
+  "name": "thebookstrade",
+  "version": "1.0.0",
+  "description": "Manage a Book Trading Club",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/br4in/thebookstrade.git"
+  },
+  "author": "br4in",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/br4in/thebookstrade/issues"
+  },
+  "homepage": "https://github.com/br4in/thebookstrade#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.16.0",
+    "connect-flash": "^0.1.1",
+    "express": "^4.14.0",
+    "express-session": "^1.15.0",
+    "mongoose": "^4.7.8",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
+}
