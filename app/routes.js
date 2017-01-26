@@ -1,3 +1,5 @@
+var User = require("../app/models/user.js");
+
 module.exports = function(app, passport) {
     // Home
     app.route('/')
@@ -23,15 +25,14 @@ module.exports = function(app, passport) {
         
     // Profile section
     // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.route('/profile')
         .get(isLoggedIn, function(request, response) {
             //response.sendFile(process.cwd() + '/public/profile.html', { user : request.user });
-            var data = {
+            var options = {
                 user : request.user
             };
             console.log(request.user.local['email']);
-            response.sendFile(process.cwd() + '/public/profile.html', { user : request.user });
+            response.sendFile(process.cwd() + '/public/profile.html', options);
         });
     
     // Logout 
@@ -41,7 +42,20 @@ module.exports = function(app, passport) {
             response.redirect('/');
         });
     
+    app.route('/data')
+        .get(isLoggedIn, function(request, response) {
+             var data = {
+                 user : request.user
+             };
+             response.json(data);
+        });
     
+    // Update profile settings
+    app.route('/updateProfile')
+        .post(function(request, response) {
+            
+            User.findById()
+        });
        
     // Make sure the user is logged in 
     function isLoggedIn(request, response, next) {
