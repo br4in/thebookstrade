@@ -28,6 +28,7 @@
             <div id="settings-div">
                 <button class="nav-btn" id="settings-btn" onclick="location.href='/profile'"></button>
                 <button class="nav-btn" id="login-btn" onclick="location.href='/logout'"></button>
+                <button class="nav-btn" id="home-btn" onclick="location.href='/home'"></button>
             </div>
         </nav>
         
@@ -35,14 +36,21 @@
             <div id="intro-bg-div">
                 <img id="intro-bg" src="imgs/books-cover.jpg">
             </div>
+            <div class="onoffswitch">
+                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
             <div id="profile-settings">
                 <h1>Update Profile</h1>
                 <div class="container">
-                    <form method="post" action="/updateProfile">
+                    <form method="post" action="/updateProfile" id="updateProfileForm">
                         <input type="text" class="inputText" name="city" placeholder="City">
                         <input type="text" class="inputText" name="state" placeholder="State">
                         <input type="text" class="inputText" name="username" placeholder="Username">
-                        <input class="inputSubmit" type="submit">
+                        <input class="inputSubmit" type="submit" value="Save">
                     </form>
                 </div>
                 <h1>Change Password</h1>
@@ -50,7 +58,7 @@
                     <form method="post" action="changePasswd">
                         <input type="text" class="inputText" name="oldPass" placeholder="Old password">
                         <input type="text" class="inputText" name="newPass" placeholder="New password">
-                        <input class="inputSubmit" type="submit">
+                        <input class="inputSubmit" type="submit" value="Save">
                     </form>
                 </div>
             </div>

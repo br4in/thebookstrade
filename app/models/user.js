@@ -6,7 +6,10 @@ var mongoose = require("mongoose"),
 var userSchema = mongoose.Schema({
     local : {
         email : String,
-        password : String
+        password : String,
+        username : String,
+        city : String,
+        state : String
     }
 });
 

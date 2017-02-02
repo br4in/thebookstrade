@@ -1,10 +1,16 @@
 var User = require("../app/models/user.js");
 
 module.exports = function(app, passport) {
-    // Home
+    // Index
     app.route('/')
         .get(function(request, response) {
             response.sendFile(process.cwd() + '/public/index.html');
+        });
+        
+    // Home
+    app.route('/home')
+        .get(isLoggedIn, function(request, response) {
+            response.sendFile(process.cwd() + '/public/home.html');
         });
         
     // Login
@@ -31,7 +37,6 @@ module.exports = function(app, passport) {
             var options = {
                 user : request.user
             };
-            console.log(request.user.local['email']);
             response.sendFile(process.cwd() + '/public/profile.html', options);
         });
     
@@ -53,8 +58,23 @@ module.exports = function(app, passport) {
     // Update profile settings
     app.route('/updateProfile')
         .post(function(request, response) {
-            
-            User.findById()
+            var username = request.body.username,
+                city = request.body.city,
+                state = request.body.state,
+                id = request.body.id;
+            User.findById(id, function(error, doc) {
+                if (error) throw error;
+                if (doc) {
+                    doc.local.city = city;
+                    doc.local.state = state;
+                    doc.local.username = username;
+                    // Save
+                    doc.save(function(error) {
+                        if (error) throw error;
+                        console.log('Settings updated.');
+                    });
+                }
+            });
         });
        
     // Make sure the user is logged in 
