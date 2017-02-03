@@ -55,14 +55,28 @@
                 </div>
                 <h1>Change Password</h1>
                 <div class="container">
-                    <form method="post" action="changePasswd">
+                    <form method="post" action="/changePasswd">
                         <input type="text" class="inputText" name="oldPass" placeholder="Old password">
                         <input type="text" class="inputText" name="newPass" placeholder="New password">
                         <input class="inputSubmit" type="submit" value="Save">
                     </form>
                 </div>
             </div>
-            
+            <div id="profile">
+                <h1>Hello, User</h1>
+                <div class="container">
+                    <form method="post" action="/newBook">
+                        <input type="text" class="inputText" name="bookTitle" placeholder="Add a new book">
+                        <input class="inputSubmit" type="submit" value="Add">
+                    </form>
+                </div>
+                <div class="container">
+                    <h1>Your books</h1>
+                    <div id="my-books">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script src='https://code.jquery.com/jquery-3.1.1.min.js'></script>

@@ -1,6 +1,10 @@
 var User = require("../app/models/user.js");
+var manageBooksModule = require("../config/book_controller.js");
 
 module.exports = function(app, passport) {
+    
+    var manageBooks = new manageBooksModule();
+    
     // Index
     app.route('/')
         .get(function(request, response) {
@@ -76,7 +80,29 @@ module.exports = function(app, passport) {
                 }
             });
         });
-       
+    
+    // Get new book
+    app.route('/newBook')
+        .post(function(request, response) {
+            // console.log(request.body.bookTitle);
+            // var book = {};
+            // book.title = request.body.bookTitle;
+            // book.email = request.user.local.email;
+            manageBooks.searchBook(request, response, request.body.bookTitle);
+        });
+      
+    // Get all books owned by a user
+    app.route('/ownedBooks')
+        .get(function(request, response) {
+             manageBooks.getOwnedBooks(request, response, request.user.local.email);
+        });
+        
+    // Get all books in db
+    app.route('/getAll')
+        .get(function(request, response) {
+            manageBooks.getAllBooks(request, response); 
+        });
+      
     // Make sure the user is logged in 
     function isLoggedIn(request, response, next) {
         if (request.isAuthenticated()) {

@@ -34,19 +34,30 @@ $(document).ready(function() {
     });
     
     // Switch button controls
-    $('.onoffswitch-inner').click(function() {
-        var clicks = $(this).data('clicks');
-        if (clicks) {
-            // odd clicks
-            alert('Show profile');
-            $('#profile-settings').empty();
+    $('input[name="onoffswitch"]').click(function() {
+              // this will contain a reference to the checkbox   
+        if (this.checked) {
+            // the checkbox is now checked
+            $('#profile-settings').hide();
+            $('#profile').show();
         } else {
-            // even clicks
-            alert('Show settings');
+            // the checkbox is now no longer checked
+            $('#profile').hide();
+            $('#profile-settings').show();
         }
-        $(this).data("clicks", !clicks);
     });
     
-    
+    // Get all books owned by the user
+    $.getJSON('https://thebookstrade-br4in.c9users.io/ownedBooks', function(data) {
+        console.log(JSON.stringify(data));
+        for (var i = 0; i < data.length; i++) {
+            var div = `
+            <div class="book-div"><a href="/test">
+            <img class="book-img" src="`+data[i].cover+`">
+            </a></div>
+            `;
+            $('#my-books').append(div);
+        }
+    });
     
 });

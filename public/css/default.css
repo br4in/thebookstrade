@@ -135,6 +135,20 @@ nav li a {
     margin: 5px 0;
 }
 
+/* ############ book classes ############# */
+.book-div {
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+    margin: 10px 5px;
+    display: inline-block;
+}
+
+.book-div img {
+    width: 100%;
+    height: 100%;
+}
 
 /************************** Media Queries **************************/
 @media screen and (max-width: 812px) {
