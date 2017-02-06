@@ -1,15 +1,19 @@
 /* global $ */
 
 $(document).ready(function() {
+    var url = 'https://thebookstrade-br4in.c9users.io';
+    
+    $('nav > ul').click(function() {
+        window.location.href = url+'/home';
+    });
+    
     // Get all the books in db
-    $.getJSON('https://thebookstrade-br4in.c9users.io/getAll', function(data) {
+    $.getJSON(url + '/getAll', function(data) {
         for (var i = 0; i < data.length; i++) {
             var div = `
-            <div class="book-div"><a href="/test">
-            <img class="book-img" src="`+data[i].cover+`">
-            </a></div>
-            `;
+            <a href="/details/`+data[i]._id+`"><div class="book-div">
+            <img src="`+data[i].cover+`"></div></a>`;
             $('#all-books-div').append(div);
-        } 
+        }
     });
 });

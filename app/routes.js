@@ -51,6 +51,7 @@ module.exports = function(app, passport) {
             response.redirect('/');
         });
     
+    // get user's data
     app.route('/data')
         .get(isLoggedIn, function(request, response) {
              var data = {
@@ -84,10 +85,6 @@ module.exports = function(app, passport) {
     // Get new book
     app.route('/newBook')
         .post(function(request, response) {
-            // console.log(request.body.bookTitle);
-            // var book = {};
-            // book.title = request.body.bookTitle;
-            // book.email = request.user.local.email;
             manageBooks.searchBook(request, response, request.body.bookTitle);
         });
       
@@ -101,6 +98,21 @@ module.exports = function(app, passport) {
     app.route('/getAll')
         .get(function(request, response) {
             manageBooks.getAllBooks(request, response); 
+        });
+        
+    app.route('/removeBook/:id')
+        .get(function(request, response) {
+            manageBooks.removeBook(request, response, request.params.id);
+        });
+        
+    app.route('/bookDetails/:id')
+        .get(function(request, response) {
+            manageBooks.displayBook(request, response, request.params.id);
+        });
+    
+    app.route('/details/:id')
+        .get(function(request, response) {
+            response.sendFile(process.cwd() + '/public/details.html');
         });
       
     // Make sure the user is logged in 

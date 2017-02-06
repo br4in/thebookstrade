@@ -33,9 +33,6 @@
         </nav>
         
         <div id="features-div">
-            <div id="intro-bg-div">
-                <img id="intro-bg" src="imgs/books-cover.jpg">
-            </div>
             <div class="onoffswitch">
                 <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
                 <label class="onoffswitch-label" for="myonoffswitch">
@@ -62,10 +59,10 @@
                     </form>
                 </div>
             </div>
-            <div id="profile">
-                <h1>Hello, User</h1>
+            <div id="profile-div">
+                <h1 id="title">Hello</h1>
                 <div class="container">
-                    <form method="post" action="/newBook">
+                    <form method="post" action="/newBook" id="newBookForm">
                         <input type="text" class="inputText" name="bookTitle" placeholder="Add a new book">
                         <input class="inputSubmit" type="submit" value="Add">
                     </form>

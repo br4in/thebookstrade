@@ -2,8 +2,20 @@
     text-align: center;
 }
 
+#features-div {
+    margin-top: 40px;
+}
+
 #profile-settings {
     display: none;
+}
+
+#my-books {
+    height: 240px;
+}
+
+#profile-div {
+    overflow-y: scroll;
 }
 
 .onoffswitch {

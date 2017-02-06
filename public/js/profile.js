@@ -1,11 +1,16 @@
 /* global $ */
 
 $(document).ready(function() {
-    var url = 'https://thebookstrade-br4in.c9users.io'
+    var url = 'https://thebookstrade-br4in.c9users.io';
+    
+    $('nav > ul').click(function() {
+        window.location.href = url+'/home';
+    });
     
     // Get user data
     var user_id;
     $.getJSON(url+'/data', function(data) {
+        console.log(JSON.stringify(data));
         user_id = data.user._id;
         // Insert user values into the form, if they exist
         if (data.user.local.city) {
@@ -16,9 +21,12 @@ $(document).ready(function() {
         }
         if (data.user.local.username) {
             $('input[name="username"]').val(data.user.local.username);
+            //display username
+            $('#title').text('Hello, '+ data.user.local.username);
         }
     });
     
+    // send values from form to db
     $('#updateProfileForm').submit(function(event) {
         event.preventDefault();
         var values = {};
@@ -33,31 +41,57 @@ $(document).ready(function() {
         });
     });
     
+    // prevent empty submission on newBookForm
+    $('#newBookForm').submit(function(event) {
+        var bookTitle = $('input[name="bookTitle"]').val();
+        var postData = {
+            title : bookTitle
+        };
+        if (bookTitle.length > 0) {
+            $.post(url+'/newBook', postData);
+        } else {
+            alert('Title required');
+            event.preventDefault();
+        }
+    });
+    
     // Switch button controls
     $('input[name="onoffswitch"]').click(function() {
               // this will contain a reference to the checkbox   
         if (this.checked) {
             // the checkbox is now checked
             $('#profile-settings').hide();
-            $('#profile').show();
+            $('#profile-div').show();
         } else {
             // the checkbox is now no longer checked
-            $('#profile').hide();
+            $('#profile-div').hide();
             $('#profile-settings').show();
         }
     });
     
-    // Get all books owned by the user
-    $.getJSON('https://thebookstrade-br4in.c9users.io/ownedBooks', function(data) {
+    // Get all user's books
+    $.getJSON(url+'/ownedBooks', function(data) {
         console.log(JSON.stringify(data));
-        for (var i = 0; i < data.length; i++) {
-            var div = `
-            <div class="book-div"><a href="/test">
-            <img class="book-img" src="`+data[i].cover+`">
-            </a></div>
-            `;
-            $('#my-books').append(div);
+        if (data.length != 0) {
+            for (var i = 0; i < data.length; i++) {
+                var div = `
+                <div class="book-div">
+                <img id="/removeBook/`+data[i]._id+`" src="`+data[i].cover+`"></div>`;
+                $('#my-books').append(div);
+            }
+        } else {
+            var msg = '<p>You have no books to trade</p>';
+            $('#my-books').append(msg);
         }
     });
+    
+    $('#my-books').on('click', 'img', function(event) {
+        // remove book
+        $.getJSON(url + $(this).attr('id'), function(data) {
+            window.location.replace('/profile');
+        });
+    });
+    
+    
     
 });

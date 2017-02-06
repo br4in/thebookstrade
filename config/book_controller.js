@@ -7,7 +7,6 @@ function manageBooks() {
     this.searchBook = function(request, response, title) {
         // -->prevent duplicate from same user<-- to-do
         books.search(title, function(error, results) {
-            console.log(JSON.stringify(results[0].thumbnail));
             if (error) throw error;
             var newBook = new Book();
             newBook.title = results[0].title;
@@ -16,6 +15,7 @@ function manageBooks() {
             newBook.cover = results[0].thumbnail;
             newBook.save(function(error) {
                 if (error) throw error;
+                console.log(newBook);
                 response.redirect('/profile');
             });
         });
@@ -36,20 +36,25 @@ function manageBooks() {
         });
     };
     
-    this.removeBook = function(request, response) {
-        /*
+    this.removeBook = function(request, response, id) {
         Book.findById(id, function(error, book) {
             if (error) throw error;
             if (book) {
                 book.remove(function(error) {
                     if (error) throw error;
-                    response.json(book);
+                    response.json('Book removed');
                 });
-            } else {
-                console.log('Book not found');
             }
         });
-        */
+    };
+    
+    this.displayBook = function(request, response, id) {
+        Book.findById(id, function(error, book) {
+            if (error) throw error;
+            if (book) {
+                response.json(book);
+            }
+        });
     };
 }
 

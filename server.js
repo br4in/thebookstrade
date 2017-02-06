@@ -16,6 +16,7 @@ require('./config/passport')(passport); // pass passport for configuration
 
 app.use(bodyParser()); // get information from html forms
 app.use(express.static(path.join(__dirname, '/public')));
+app.use('/css', express.static(path.join(__dirname, '/public/css')));
 // required for passport
 app.use(session({ secret: 'mysecretpass' })); // session secret
 app.use(passport.initialize());
