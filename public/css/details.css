@@ -2,6 +2,12 @@
     text-align: center;
 }
 
+#container {
+    overflow: auto;
+    width: 70%;
+    margin: 50px auto;
+}
+
 .book-div-details {
     width: 170px;
     height: 170px;
@@ -15,6 +21,10 @@
     height: 100%;
 }
 
-#author-div {
-    display: inline;
+#book-info-div {
+    margin-top: 10px;
+}
+
+p {
+    margin: 0;
 }

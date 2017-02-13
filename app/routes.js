@@ -37,11 +37,7 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     app.route('/profile')
         .get(isLoggedIn, function(request, response) {
-            //response.sendFile(process.cwd() + '/public/profile.html', { user : request.user });
-            var options = {
-                user : request.user
-            };
-            response.sendFile(process.cwd() + '/public/profile.html', options);
+            response.sendFile(process.cwd() + '/public/profile.html');
         });
     
     // Logout 
@@ -58,6 +54,10 @@ module.exports = function(app, passport) {
                  user : request.user
              };
              response.json(data);
+             // change firstLogin var status
+             if (request.user.local.firstLogin) {
+                 passport.updateLoginVar(request.user);
+             }
         });
     
     // Update profile settings
@@ -111,8 +111,33 @@ module.exports = function(app, passport) {
         });
     
     app.route('/details/:id')
-        .get(function(request, response) {
+        .get(isLoggedIn, function(request, response) {
             response.sendFile(process.cwd() + '/public/details.html');
+        });
+        
+    app.route('/trade')
+        .post(function(request, response) {
+            // update counts of request maker
+            User.findOne({'local.email' : request.user.local.email}, function(error, user) {
+                if (error) throw error;
+                user.local.requestsOut += 1;
+                user.save(function(error) {
+                    if (error) throw error;
+                    console.log('Count updated');
+                });
+            });
+            
+            // update counts of book owner
+            User.findOne({'local.email' : request.body.owner}, function(error, user) {
+                if (error) throw error;
+                user.local.requestsIn += 1;
+                user.save(function(error)  {
+                    if (error) throw error;
+                    console.log('Count updated');
+                });
+            });
+            // update book info and set to unavailable
+            manageBooks.setStatus(request, response, request.body.ID);
         });
       
     // Make sure the user is logged in 

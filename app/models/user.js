@@ -9,7 +9,10 @@ var userSchema = mongoose.Schema({
         password : String,
         username : String,
         city : String,
-        state : String
+        state : String,
+        firstLogin : Boolean,
+        requestsIn : Number,
+        requestsOut : Number
     }
 });
 

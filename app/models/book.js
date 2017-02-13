@@ -6,9 +6,7 @@ var bookSchema = mongoose.Schema({
     author  : String,
     owner : String,
     cover : String,
-    status : {
-        available : Boolean
-    }
+    available : Boolean
 });
 
 // create the model for book and expose to the app

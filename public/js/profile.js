@@ -12,6 +12,16 @@ $(document).ready(function() {
     $.getJSON(url+'/data', function(data) {
         console.log(JSON.stringify(data));
         user_id = data.user._id;
+        var isFirstLogin = data.user.local.firstLogin;
+        // if the user il loggin in for the first time, remind it to update
+        //      its info in the settings panel
+        if (isFirstLogin) {
+            alert('Welcome, remember to update your info in the settings panel by clicking on the switch');
+        }
+        // Set in/out requests counts
+        $('#incomingNum').text(data.user.local.requestsIn);
+        $('#outgoingNum').text(data.user.local.requestsOut);
+        
         // Insert user values into the form, if they exist
         if (data.user.local.city) {
             $('input[name="city"]').val(data.user.local.city);
@@ -24,6 +34,7 @@ $(document).ready(function() {
             //display username
             $('#title').text('Hello, '+ data.user.local.username);
         }
+        
     });
     
     // send values from form to db
@@ -92,6 +103,28 @@ $(document).ready(function() {
         });
     });
     
+    $('#requests-in').click(function() {
+        var requestsDiv = `
+            
+        `;
+        $('#requested-books-div').show();
+    });
+    
+    $('#requests-out').click(function() {
+        var requestsDiv = `
+            
+        `;
+        $('#requested-books-div').show();
+    });
+    
+    $('.trade-btn').click(function(event) {
+        $('#requested-books-div').hide();
+        if ($(this).attr('id') === 'reject-btn') {
+            // trade has been rejected
+        } else {
+            // trade has been accepted
+        }
+    });
     
     
 });

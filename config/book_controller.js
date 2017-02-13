@@ -13,6 +13,7 @@ function manageBooks() {
             newBook.author = results[0].authors;
             newBook.owner = request.user.local.email;
             newBook.cover = results[0].thumbnail;
+            newBook.available = true;
             newBook.save(function(error) {
                 if (error) throw error;
                 console.log(newBook);
@@ -23,7 +24,7 @@ function manageBooks() {
     
     // Get all the books in the db
     this.getAllBooks = function(request, response) {
-        Book.find(function(error, books) {
+        Book.find({available : true}, function(error, books) {
             if (error) throw error;
             response.json(books);
         });
@@ -53,6 +54,23 @@ function manageBooks() {
             if (error) throw error;
             if (book) {
                 response.json(book);
+            }
+        });
+    };
+    
+    this.setStatus = function(request, response, id) {
+        Book.findById(id, function(error, book) {
+            if (error) throw error;
+            if (book) {
+                if (book.available === true) {
+                    book.available = false;
+                } else {
+                    book.available = true;
+                }
+                book.save(function(error) {
+                    if (error) throw error;
+                    console.log('Book status updated');
+                });
             }
         });
     };

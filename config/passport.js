@@ -31,6 +31,9 @@ module.exports = function(passport) {
                 } else {
                     // Create the user
                     var newUser = new User();
+                    newUser.local.firstLogin = true;
+                    newUser.local.requestsIn = 0;
+                    newUser.local.requestsOut = 0;
                     // Set credentials
                     newUser.local.email = email;
                     newUser.local.password = newUser.generateHash(password);
@@ -62,4 +65,17 @@ module.exports = function(passport) {
             return done(null, user);
         });
     }));
+    
+    // update firstLogin var
+    passport.updateLoginVar = function(user) {
+        console.log(user);
+        User.findOne({'local.email': user.local.email}, function(error, user) {
+            if (error) throw error;
+            user.local.firstLogin = false;
+            user.save(function(error) {
+                if (error) throw error;
+                    console.log('Settings updated.');
+                });
+        });
+    };
 };
