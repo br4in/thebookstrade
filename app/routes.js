@@ -58,11 +58,14 @@ module.exports = function(app, passport) {
              if (request.user.local.firstLogin) {
                  passport.updateLoginVar(request.user);
              }
+             console.log(request.user.local.requestsOutArray);
         });
     
     // Update profile settings
     app.route('/updateProfile')
         .post(function(request, response) {
+            // handle password or user's info request
+            // save user's info
             var username = request.body.username,
                 city = request.body.city,
                 state = request.body.state,
@@ -77,6 +80,7 @@ module.exports = function(app, passport) {
                     doc.save(function(error) {
                         if (error) throw error;
                         console.log('Settings updated.');
+                        response.json('Settings updated.');
                     });
                 }
             });
@@ -121,9 +125,13 @@ module.exports = function(app, passport) {
             User.findOne({'local.email' : request.user.local.email}, function(error, user) {
                 if (error) throw error;
                 user.local.requestsOut += 1;
+                var bookArr = [];
+                bookArr.push(request.body.title, request.body.owner);
+                user.local.requestsOutArray.push(bookArr);
+                console.log(user.local.requestsOutArray);
                 user.save(function(error) {
                     if (error) throw error;
-                    console.log('Count updated');
+                    console.log('Count updated requester');
                 });
             });
             
@@ -131,14 +139,70 @@ module.exports = function(app, passport) {
             User.findOne({'local.email' : request.body.owner}, function(error, user) {
                 if (error) throw error;
                 user.local.requestsIn += 1;
+                var bookArr = [];
+                bookArr.push(request.body.title, request.user.local.email, request.body.ID);
+                user.local.requestsInArray.push(bookArr);
+                console.log(user.local.requestsInArray);
                 user.save(function(error)  {
                     if (error) throw error;
-                    console.log('Count updated');
+                    console.log('Count updated owner');
                 });
             });
             // update book info and set to unavailable
-            manageBooks.setStatus(request, response, request.body.ID);
+            manageBooks.setAvailableStatus(request, response, request.body.ID);
         });
+        
+    app.route('/tradeStatus')
+        .post(function(request, response) {
+            console.log('tradeStatus');
+            User.findOne({'local.email' : request.user.local.email}, function(error, user) {
+                console.log('owner');
+                if (error) throw error;
+                user.local.requestsIn -= 1;
+                // remove book from incoming requests array
+                for (var i = 0; i < user.local.requestsInArray.length; i++) {
+                    if (user.local.requestsInArray[i][0] === request.body.title) {
+                        user.local.requestsInArray.splice(i, 1);
+                    }
+                }
+                user.save(function(error)  {
+                    if (error) throw error;
+                    console.log('Owner Updated ' + user.local.email);
+                });
+            });
+            
+            // requester
+            User.findOne({'local.email' : request.body.requester}, function(error, user) {
+                if (error) throw error;
+                user.local.requestsOut -= 1;
+                // remove book from outgoing requests array
+                for (var i = 0; i < user.local.requestsOutArray.length; i++) {
+                    if (user.local.requestsOutArray[i][0] === request.body.title) {
+                        user.local.requestsOutArray[i].set(2, request.body.status);
+                        user.markModified('requestsOutArray');
+                        user.save(function(error)  {
+                            if (error) throw error;
+                            console.log('Requester Updated ' + JSON.stringify(user));
+                        });
+                    }
+                }
+                user.save(function(error)  {
+                    if (error) throw error;
+                    console.log('Requester Updated ' + user.local.requestsOutArray);
+                });
+                
+            });
+            
+            if (request.body.status === 'Rejected') {
+                //manageBooks.tradeRejected(request, response, request.body.ID);
+            }
+            
+        });
+      
+      
+      
+      
+      
       
     // Make sure the user is logged in 
     function isLoggedIn(request, response, next) {
