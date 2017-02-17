@@ -4,13 +4,23 @@ $(document).ready(function() {
     var url = 'https://thebookstrade-br4in.c9users.io';
     var htmlFile = window.location.pathname;
     var ID = htmlFile.substring(9,htmlFile.length);
-    var bookOwner;
-    var bookTitle;
+    var bookOwner,
+        bookTitle,
+        bookRequester;
+        
+    $('nav > ul').click(function() {
+        window.location.href = url+'/home';
+    });
+    
+    // get user data
+    $.getJSON(url+'/data', function(data) {
+        bookRequester = data.user.local.email;
+    });
     
     // Get book's info then create and append div
     $.getJSON(url + '/bookDetails/' + ID, function(data) {
-        bookOwner = data.owner;
-        bookTitle = data.title;
+        bookOwner = data.owner,
+            bookTitle = data.title;
         var bookDiv = `
         <h1>`+data.title+`</h1>
         <div id="container">
@@ -27,16 +37,21 @@ $(document).ready(function() {
         $('#book-details-div').append(bookDiv);
     });
     
-    // On request button press, send request to the owner and set available
-    //      to false. (if the trade won't be successful, set back to true)
-    $('#book-details-div').on('click', 'button', function() {
-        var options = {
-            owner : bookOwner,
-            ID : ID,
-            title: bookTitle
-        };
-        $.post(url + '/trade', options, function(data) {
-            window.location.href = '/profile';
-        });
+    /* On request button press, send request to the owner and set available
+        to false. (if the trade won't be successful, set back to true) */
+    $('#book-details-div').on('click', 'button', function(event) {
+        if (bookRequester === bookOwner) {
+            event.preventDefault();
+            alert('This book is already yours!');
+        } else {
+            var options = {
+                owner : bookOwner,
+                ID : ID,
+                title: bookTitle
+            };
+            $.post(url + '/trade', options, function(data) {
+                window.location.href = '/home';
+            });
+        }
     });
 });

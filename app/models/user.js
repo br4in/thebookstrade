@@ -28,17 +28,5 @@ userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);  
 };
 
-// userSchema.methods.comparePassword = function(user, oldPass, newPass) {
-//         bcrypt.hash(oldPass, null, null, function(error, hash) {
-//             if (error) throw error;
-//             // store hash in passwords DB
-//         });
-//         // load hash from passwords DB
-//         bcrypt.compare('')
-//     };
-
-
-
-
 // create the model for user and expose to the app
 module.exports = mongoose.model('User', userSchema);

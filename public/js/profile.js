@@ -12,7 +12,6 @@ $(document).ready(function() {
     // Get user data
     var user_id;
     $.getJSON(url+'/data', function(data) {
-        console.log(JSON.stringify(data));
         user_id = data.user._id;
         var isFirstLogin = data.user.local.firstLogin;
         // if the user il logging in for the first time, remind it to update
@@ -26,8 +25,6 @@ $(document).ready(function() {
         // Fill requestsIn
         requestsInArray = data.user.local.requestsInArray;
         requestsOutArray = data.user.local.requestsOutArray;
-        console.log(requestsInArray);
-        console.log('Out '+requestsOutArray);
         
         // Insert user values into the form, if they exist
         if (data.user.local.city) {
@@ -198,7 +195,7 @@ $(document).ready(function() {
             data.status = 'Accepted';
         }
         $.post(url+ '/tradeStatus', data, function(data) {
-            
+            window.location.href = '/profile';
         });
     });
     
@@ -207,7 +204,5 @@ $(document).ready(function() {
         $('#requested-books-div').hide();
         $('#bookTitles').empty();
     });
-    
-    
     
 });

@@ -98,8 +98,6 @@ module.exports = function(app, passport) {
                     });
                 }
             });
-            
-            
         });
     
     // Get new book
@@ -144,7 +142,6 @@ module.exports = function(app, passport) {
                 var bookArr = [];
                 bookArr.push(request.body.title, request.body.owner);
                 user.local.requestsOutArray.push(bookArr);
-                console.log(user.local.requestsOutArray);
                 user.save(function(error) {
                     if (error) throw error;
                     console.log('Count updated requester');
@@ -158,7 +155,6 @@ module.exports = function(app, passport) {
                 var bookArr = [];
                 bookArr.push(request.body.title, request.user.local.email, request.body.ID);
                 user.local.requestsInArray.push(bookArr);
-                console.log(user.local.requestsInArray);
                 user.save(function(error)  {
                     if (error) throw error;
                     console.log('Count updated owner');
@@ -170,9 +166,7 @@ module.exports = function(app, passport) {
         
     app.route('/tradeStatus')
         .post(function(request, response) {
-            console.log('tradeStatus');
             User.findOne({'local.email' : request.user.local.email}, function(error, user) {
-                console.log('owner');
                 if (error) throw error;
                 user.local.requestsIn -= 1;
                 // remove book from incoming requests array
@@ -194,7 +188,6 @@ module.exports = function(app, passport) {
                 // remove book from outgoing requests array
                 for (var i = 0; i < user.local.requestsOutArray.length; i++) {
                     if (user.local.requestsOutArray[i][0] === request.body.title) {
-                        console.log(user.local.requestsOutArray[i][0]);
                     /* using array.push the db is not updated, array.set works.
                     create a copy of the chosen array, push the new value in it,
                     remove the original array and then add the new array using 
@@ -202,12 +195,13 @@ module.exports = function(app, passport) {
                         var newArr = user.local.requestsOutArray[i];
                         newArr.push(request.body.status);
                         user.local.requestsOutArray.splice(i, 1);
-                        console.log('newArr: '+newArr);
                         var index = user.local.requestsOutArray.length;
                         user.local.requestsOutArray.set(index, newArr);
                         
                         user.save(function(error)  {
-                            if (error) throw error;
+                            if (error) {
+                                console.log(error);
+                            }
                             console.log('Requester Updated ' + user.local.requestsOutArray);
                             if (request.body.status === 'Rejected') {
                                 manageBooks.tradeRejected(request, response, request.body.ID);
