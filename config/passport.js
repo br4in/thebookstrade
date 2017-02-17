@@ -68,7 +68,6 @@ module.exports = function(passport) {
     
     // update firstLogin var
     passport.updateLoginVar = function(user) {
-        console.log(user);
         User.findOne({'local.email': user.local.email}, function(error, user) {
             if (error) throw error;
             user.local.firstLogin = false;

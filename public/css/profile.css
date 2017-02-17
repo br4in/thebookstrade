@@ -28,12 +28,36 @@
 #requested-books-div {
     background-color: aliceblue;
     border-radius: 15px;
-    border: 1px solid white;
     width: 350px;
     margin: 0 auto;
+    left: 0;
+    right: 0;
     text-align: center;
     display: none;
+    position: absolute;
+    overflow-y: scroll;
+    z-index: 20;
 }
+
+.close-btns {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    right: 5px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    text-shadow: 0 1px 0 #fff;
+    top: 5px;
+}
+.close-btns:after {
+    content: "x";
+}
+.close-btns:active {
+    background-color: black;
+}
+
 
 /* Switch */
 .onoffswitch {

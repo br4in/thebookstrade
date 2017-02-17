@@ -5,10 +5,12 @@ $(document).ready(function() {
     var htmlFile = window.location.pathname;
     var ID = htmlFile.substring(9,htmlFile.length);
     var bookOwner;
+    var bookTitle;
     
     // Get book's info then create and append div
     $.getJSON(url + '/bookDetails/' + ID, function(data) {
         bookOwner = data.owner;
+        bookTitle = data.title;
         var bookDiv = `
         <h1>`+data.title+`</h1>
         <div id="container">
@@ -30,10 +32,11 @@ $(document).ready(function() {
     $('#book-details-div').on('click', 'button', function() {
         var options = {
             owner : bookOwner,
-            ID : ID
+            ID : ID,
+            title: bookTitle
         };
-        $.post(url + '/trade', options, function() {
-            
+        $.post(url + '/trade', options, function(data) {
+            window.location.href = '/profile';
         });
     });
 });

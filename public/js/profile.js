@@ -2,6 +2,8 @@
 
 $(document).ready(function() {
     var url = 'https://thebookstrade-br4in.c9users.io';
+    var requestsInArray = [];
+    var requestsOutArray = [];
     
     $('nav > ul').click(function() {
         window.location.href = url+'/home';
@@ -13,7 +15,7 @@ $(document).ready(function() {
         console.log(JSON.stringify(data));
         user_id = data.user._id;
         var isFirstLogin = data.user.local.firstLogin;
-        // if the user il loggin in for the first time, remind it to update
+        // if the user il logging in for the first time, remind it to update
         //      its info in the settings panel
         if (isFirstLogin) {
             alert('Welcome, remember to update your info in the settings panel by clicking on the switch');
@@ -21,6 +23,11 @@ $(document).ready(function() {
         // Set in/out requests counts
         $('#incomingNum').text(data.user.local.requestsIn);
         $('#outgoingNum').text(data.user.local.requestsOut);
+        // Fill requestsIn
+        requestsInArray = data.user.local.requestsInArray;
+        requestsOutArray = data.user.local.requestsOutArray;
+        console.log(requestsInArray);
+        console.log('Out '+requestsOutArray);
         
         // Insert user values into the form, if they exist
         if (data.user.local.city) {
@@ -48,7 +55,18 @@ $(document).ready(function() {
         console.log(JSON.stringify(values));
         // Submit
         $.post(url+'/updateProfile', values, function(data) {
-            // Process data
+            window.location.href = "/profile";
+        });
+    });
+    
+    $('#changePasswdForm').submit(function(event) {
+        event.preventDefault();
+        var values = {};
+        $.each($('#changePasswdForm').serializeArray(), function(i, field) {
+            values[field.name] = field.value;
+        });
+        $.post(url+'/changePasswd', values, function(data) {
+            window.location.href = '/profile';
         });
     });
     
@@ -104,27 +122,92 @@ $(document).ready(function() {
     });
     
     $('#requests-in').click(function() {
-        var requestsDiv = `
-            
-        `;
+        $('#bookTitles').empty();
         $('#requested-books-div').show();
+        var btnsDiv = `
+            <button class="trade-btn" id="reject-btn">X</button>
+            <button class="trade-btn" id="accept-btn">&#10003;</button>
+        `;
+        if (requestsInArray.length > 0) {
+            for (var i = 0; i < requestsInArray.length; i++) {
+                var bookTitle = `
+                <p id=`+requestsInArray[i][2]+`>`
+                +requestsInArray[i][0]+` : `
+                +requestsInArray[i][1]+`</p>`;
+                var completeDiv = '<div>'+bookTitle+btnsDiv+'</div>';
+                $('#bookTitles').append(completeDiv);
+            }
+        } else {
+            var message = '<p>You have no trade requests</p>';
+            $('#bookTitles').append(message);
+        }
+        
     });
     
     $('#requests-out').click(function() {
-        var requestsDiv = `
-            
-        `;
+        $('#bookTitles').empty();
         $('#requested-books-div').show();
-    });
-    
-    $('.trade-btn').click(function(event) {
-        $('#requested-books-div').hide();
-        if ($(this).attr('id') === 'reject-btn') {
-            // trade has been rejected
-        } else {
-            // trade has been accepted
+        console.log(requestsOutArray);
+        for  (var i = 0; i < requestsOutArray.length; i++) {
+            var booktitle;
+            if (requestsOutArray[i].length === 0) {
+                booktitle = '<p>You have no trade requests</p>';
+            }
+            else if (requestsOutArray[i].length === 2) {
+                booktitle = `
+                <p>`+requestsOutArray[i][0]+` : `+requestsOutArray[i][1]+`</p>
+                `;
+            } else {
+                booktitle = `
+                <p>`+requestsOutArray[i][0]+
+                ` - `+requestsOutArray[i][1]+
+                ` : `+requestsOutArray[i][2]+`</p>`;
+            }
+            
+            $('#bookTitles').append(booktitle);
         }
     });
+    
+    $('#requested-books-div').on('click', '.trade-btn', function(event) {
+        // get the clicked title
+        var ID = $(this).siblings('p').attr('id');
+        var text = $(this).siblings('p').text();
+        var delimiter = text.lastIndexOf(':');
+        var title = text.substr(0, delimiter - 1);
+        var requester = text.substr(delimiter + 2);
+        
+        // remove the clicked book title
+        if ($('#requested-books-div').length === 1) {
+            $('#requested-books-div').hide();
+        } else {
+            var parent = $(this).parent();
+            parent.remove();
+        }
+    
+        // determine the status of the trade and send result
+        var data = {
+            title : title,
+            requester : requester,
+            ID : ID
+        };
+        if ($(this).attr('id') === 'reject-btn') {
+            // trade has been rejected
+            data.status = 'Rejected';
+        } else {
+            // trade has been accepted
+            data.status = 'Accepted';
+        }
+        $.post(url+ '/tradeStatus', data, function(data) {
+            
+        });
+    });
+    
+    // hide #requested-books-div on btn click
+    $('.close-btns').click(function() {
+        $('#requested-books-div').hide();
+        $('#bookTitles').empty();
+    });
+    
     
     
 });

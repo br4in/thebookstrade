@@ -42,9 +42,8 @@
             </div>
         </div>
         <div id="requested-books-div">
-            <p id="bookTitle">TEST</p>
-            <button class="trade-btn" id="reject-btn">X</button>
-            <button class="trade-btn" id="accept-btn">&#10003;</button>
+            <button id="close-btn" class="close-btns"></button>
+            <div id="bookTitles"></div>
         </div>
         <div id="features-div">
             <div class="onoffswitch">
@@ -66,7 +65,7 @@
                 </div>
                 <h1>Change Password</h1>
                 <div class="container">
-                    <form method="post" action="/changePasswd">
+                    <form method="post" action="/changePasswd" id="changePasswdForm">
                         <input type="text" class="inputText" name="oldPass" placeholder="Old password">
                         <input type="text" class="inputText" name="newPass" placeholder="New password">
                         <input class="inputSubmit" type="submit" value="Save">

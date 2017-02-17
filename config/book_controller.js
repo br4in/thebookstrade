@@ -58,20 +58,35 @@ function manageBooks() {
         });
     };
     
-    this.setStatus = function(request, response, id) {
+    this.setAvailableStatus = function(request, response, id) {
         Book.findById(id, function(error, book) {
             if (error) throw error;
             if (book) {
-                if (book.available === true) {
+                if (book.available) {
                     book.available = false;
                 } else {
                     book.available = true;
                 }
+
                 book.save(function(error) {
                     if (error) throw error;
                     console.log('Book status updated');
+                    response.json('Settings updated.');
                 });
             }
+        });
+    };
+    
+    this.tradeRejected = function(request, response, id) {
+        Book.findById(id, function(error, book) {
+            if (book) {
+                book.available = true;
+            }
+            book.save(function(error) {
+                if (error) throw error;
+                console.log('Book status updated');
+                response.json('Trade rejected');
+            });
         });
     };
 }

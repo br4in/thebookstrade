@@ -58,13 +58,11 @@ module.exports = function(app, passport) {
              if (request.user.local.firstLogin) {
                  passport.updateLoginVar(request.user);
              }
-             console.log(request.user.local.requestsOutArray);
         });
     
     // Update profile settings
     app.route('/updateProfile')
         .post(function(request, response) {
-            // handle password or user's info request
             // save user's info
             var username = request.body.username,
                 city = request.body.city,
@@ -84,6 +82,24 @@ module.exports = function(app, passport) {
                     });
                 }
             });
+        });
+        
+    app.route('/changePasswd')
+        .post(function(request, response) {
+            var oldPass = request.body.oldPass;
+            var newPass = request.body.newPass;
+            User.findOne({'local.email' : request.user.local.email}, function(error, user) {
+                if (error) throw error;
+                if (user.validPassword(oldPass)) {
+                    user.local.password = user.generateHash(newPass);
+                    user.save(function(error) {
+                        if (error) throw error;
+                        response.json('Password changed');
+                    });
+                }
+            });
+            
+            
         });
     
     // Get new book
@@ -178,31 +194,33 @@ module.exports = function(app, passport) {
                 // remove book from outgoing requests array
                 for (var i = 0; i < user.local.requestsOutArray.length; i++) {
                     if (user.local.requestsOutArray[i][0] === request.body.title) {
-                        user.local.requestsOutArray[i].set(2, request.body.status);
-                        user.markModified('requestsOutArray');
+                        console.log(user.local.requestsOutArray[i][0]);
+                    /* using array.push the db is not updated, array.set works.
+                    create a copy of the chosen array, push the new value in it,
+                    remove the original array and then add the new array using 
+                    array.set.*/ 
+                        var newArr = user.local.requestsOutArray[i];
+                        newArr.push(request.body.status);
+                        user.local.requestsOutArray.splice(i, 1);
+                        console.log('newArr: '+newArr);
+                        var index = user.local.requestsOutArray.length;
+                        user.local.requestsOutArray.set(index, newArr);
+                        
                         user.save(function(error)  {
                             if (error) throw error;
-                            console.log('Requester Updated ' + JSON.stringify(user));
+                            console.log('Requester Updated ' + user.local.requestsOutArray);
+                            if (request.body.status === 'Rejected') {
+                                manageBooks.tradeRejected(request, response, request.body.ID);
+                            } else {
+                                response.json('Trade accepted');
+                            }
                         });
+                        // break the loop for it gets called twice
+                        break;
                     }
                 }
-                user.save(function(error)  {
-                    if (error) throw error;
-                    console.log('Requester Updated ' + user.local.requestsOutArray);
-                });
-                
             });
-            
-            if (request.body.status === 'Rejected') {
-                //manageBooks.tradeRejected(request, response, request.body.ID);
-            }
-            
         });
-      
-      
-      
-      
-      
       
     // Make sure the user is logged in 
     function isLoggedIn(request, response, next) {
