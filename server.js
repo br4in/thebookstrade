@@ -12,9 +12,9 @@ var configDB = require("./config/database.js");
 
 mongoose.connect(configDB.url);
 
-require('./config/passport')(passport); // pass passport for configuration
+require('./config/passport')(passport);
 
-app.use(bodyParser()); // get information from html forms
+app.use(bodyParser());
 app.use(express.static(path.join(__dirname, '/public')));
 app.use('/css', express.static(path.join(__dirname, '/public/css')));
 // required for passport

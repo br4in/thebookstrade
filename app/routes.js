@@ -215,6 +215,24 @@ module.exports = function(app, passport) {
                 }
             });
         });
+    
+    app.route('/showUser/:user')
+        .get(function(request, response) {
+            User.findOne({'local.email' : request.params.user}, function(error, user) {
+                if (error) throw error;
+                if (user) {
+                    var data = {
+                        city : user.local.city,
+                        state : user.local.state,
+                        user : user.local.username,
+                        email : user.local.email
+                    };
+                    response.json(data);
+                } else {
+                    response.json('User not found');
+                }
+            });
+        });
       
     // Make sure the user is logged in 
     function isLoggedIn(request, response, next) {

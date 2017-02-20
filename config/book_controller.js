@@ -26,6 +26,7 @@ function manageBooks() {
     this.getAllBooks = function(request, response) {
         Book.find({available : true}, function(error, books) {
             if (error) throw error;
+            //response.send(JSON.stringify(request.flash('test')));
             response.json(books);
         });
     };

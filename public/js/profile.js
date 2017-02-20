@@ -102,7 +102,9 @@ $(document).ready(function() {
             for (var i = 0; i < data.length; i++) {
                 var div = `
                 <div class="book-div">
-                <img id="/removeBook/`+data[i]._id+`" src="`+data[i].cover+`"></div>`;
+                <button id="/removeBook/`+data[i]._id+`" class="close-btns"></button>
+                <img src="`+data[i].cover+`">
+                </div>`;
                 $('#my-books').append(div);
             }
         } else {
@@ -111,10 +113,10 @@ $(document).ready(function() {
         }
     });
     
-    $('#my-books').on('click', 'img', function(event) {
+    $('#my-books').on('click', 'button', function(event) {
         // remove book
         $.getJSON(url + $(this).attr('id'), function(data) {
-            window.location.replace('/profile');
+            window.location.href = '/profile';
         });
     });
     
@@ -135,7 +137,7 @@ $(document).ready(function() {
                 $('#bookTitles').append(completeDiv);
             }
         } else {
-            var message = '<p>You have no trade requests</p>';
+            var message = '<p>You have no incoming trade requests</p>';
             $('#bookTitles').append(message);
         }
         
@@ -144,24 +146,23 @@ $(document).ready(function() {
     $('#requests-out').click(function() {
         $('#bookTitles').empty();
         $('#requested-books-div').show();
-        console.log(requestsOutArray);
-        for  (var i = 0; i < requestsOutArray.length; i++) {
-            var booktitle;
-            if (requestsOutArray[i].length === 0) {
-                booktitle = '<p>You have no trade requests</p>';
-            }
-            else if (requestsOutArray[i].length === 2) {
+        var booktitle;
+        if (requestsOutArray.length > 0) {
+            for  (var i = 0; i < requestsOutArray.length; i++) {
+                if (requestsOutArray[i].length === 2) {
                 booktitle = `
-                <p>`+requestsOutArray[i][0]+` : `+requestsOutArray[i][1]+`</p>
-                `;
-            } else {
-                booktitle = `
-                <p>`+requestsOutArray[i][0]+
-                ` - `+requestsOutArray[i][1]+
-                ` : `+requestsOutArray[i][2]+`</p>`;
+                <p>`+requestsOutArray[i][0]+` : `+requestsOutArray[i][1]+`</p>`;
+                } else {
+                    booktitle = `
+                    <p>`+requestsOutArray[i][0]+
+                    ` - `+requestsOutArray[i][1]+
+                    ` : `+requestsOutArray[i][2]+`</p>`;
+                }
+                $('#bookTitles').append(booktitle);
             }
-            
-            $('#bookTitles').append(booktitle);
+        } else {
+            var message = '<p>You have no outgoing trade requests</p>';
+            $('#bookTitles').append(message);
         }
     });
     
@@ -204,5 +205,5 @@ $(document).ready(function() {
         $('#requested-books-div').hide();
         $('#bookTitles').empty();
     });
-    
+
 });

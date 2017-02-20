@@ -29,11 +29,10 @@ $(document).ready(function() {
                 <div id="author-div">
                     <p>Author: `+data.author+`</p></div>
                 <div id="owner-div">
-                    <p>Owner : `+data.owner+`</p></div>
+                    <p>Owner : <a>`+data.owner+`</a></p></div>
                 <button class="inputSubmit" id="request-btn">Request book</button>
             </div>
-        </div>
-        `;
+        </div>`;
         $('#book-details-div').append(bookDiv);
     });
     
@@ -54,4 +53,13 @@ $(document).ready(function() {
             });
         }
     });
+    
+    $('#book-details-div').on('click', 'a', function() {
+        $.getJSON(url+'/showUser/'+$(this).text(), function(data) {
+            alert('User : '+data.user+'\nCity : '+data.city+'\nState : '+data.state+'\nEmail : '+data.email);
+        });
+    });
+    
+    
+    
 });
